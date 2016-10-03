@@ -21,7 +21,7 @@ def send_document(cid, document):
     bot.send_document(cid, document)
 
 def reply_to(message, text):
-    bot.reply_to(cid, text)
+    bot.reply_to(message, text)
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
