@@ -3,8 +3,10 @@
 # Install Telebot: git clone https://github.com/eternnoir/pyTelegramBotAPI.git
 
 import telebot
+import logging
 import os
 import sys
+from telebot import types
 import requests.packages.urllib3
 requests.packages.urllib3.disable_warnings()
 
@@ -13,6 +15,22 @@ TOKEN = "254655344:AAFV_iiWL3MprmuBAfSWzZ5Jd56wFc_G8rc"
 BASE_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
 
 bot = telebot.TeleBot(TOKEN)
+
+#logger = telebot.logger
+#telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
+
+@bot.inline_handler(lambda query: query.query == '')
+def query_text(inline_query):
+    try:
+       days = []
+       result_final = types.InlineQueryResultArticle('6', 'Obtener programa completo', types.InputTextMessageContent('/programa_completo'))
+       days.append(result_final)
+       for i in range(7, 17):
+          result = types.InlineQueryResultArticle(str(i), 'Obtener dia ' + str(i), types.InputTextMessageContent('/dia ' + str(i)))
+          days.append(result)
+       bot.answer_inline_query(inline_query.id, days)
+    except Exception as e:
+        print("Exception : " + e)
 
 def send_message(cid, text):
     bot.send_message(cid, text)
