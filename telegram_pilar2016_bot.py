@@ -17,7 +17,16 @@ BASE_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
 bot = telebot.TeleBot(TOKEN)
 
 #logger = telebot.logger
-#telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
+#telebot.logger.setLevel(logging.DEBUG)
+
+def send_message(cid, text):
+    bot.send_message(cid, text)
+
+def send_document(cid, document):
+    bot.send_document(cid, document)
+
+def reply_to(message, text):
+    bot.reply_to(message, text)
 
 @bot.inline_handler(lambda query: query.query == '')
 def query_text(inline_query):
@@ -31,15 +40,6 @@ def query_text(inline_query):
        bot.answer_inline_query(inline_query.id, days)
     except Exception as e:
         print("Exception : " + e)
-
-def send_message(cid, text):
-    bot.send_message(cid, text)
-
-def send_document(cid, document):
-    bot.send_document(cid, document)
-
-def reply_to(message, text):
-    bot.reply_to(message, text)
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
