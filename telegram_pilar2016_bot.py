@@ -10,9 +10,9 @@ from telebot import types
 import requests.packages.urllib3
 requests.packages.urllib3.disable_warnings()
 
-TOKEN = "254655344:AAFV_iiWL3MprmuBAfSWzZ5Jd56wFc_G8rc"
-
 BASE_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
+
+TOKEN = open(os.path.realpath('..') + "/tokens_telegram_bots/token_pilar2016_bot.txt", 'rb').read().rstrip('\n')
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -28,6 +28,9 @@ def send_document(cid, document):
 def reply_to(message, text):
     bot.reply_to(message, text)
 
+def answer_inline_query(inline_query_id, array_types):
+    bot.answer_inline_query(inline_query_id, array_types)
+
 @bot.inline_handler(lambda query: query.query == '')
 def query_text(inline_query):
     try:
@@ -37,7 +40,7 @@ def query_text(inline_query):
        for i in range(7, 17):
           result = types.InlineQueryResultArticle(str(i), 'Obtener dia ' + str(i), types.InputTextMessageContent('/dia ' + str(i)))
           days.append(result)
-       bot.answer_inline_query(inline_query.id, days)
+       answer_inline_query(inline_query.id, days)
     except Exception as e:
         print("Exception : " + e)
 
